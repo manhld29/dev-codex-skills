@@ -1,0 +1,4 @@
+interface:
+  display_name: "Desktop E2E Autotest Generator"
+  short_description: "Generate desktop E2E tests from feature goals."
+  default_prompt: "feature_goal: <goal>\\nlaunch_target: <C:\\\\path\\\\app.exe or python path\\\\to\\\\main.py>\\nsource_paths: <optional paths>"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "PySide6 Autotest Generator"
+  short_description: "Generate PySide6 UI automation tests from app code"
+  default_prompt: "Generate a new automation test for a PySide6 feature in the current repository."

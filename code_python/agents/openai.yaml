@@ -1,0 +1,7 @@
+interface:
+  display_name: "code_python"
+  short_description: "Senior Python coding and debugging copilot"
+  default_prompt: "Use code_python (skill: $code-python) to solve this Python task with senior-level code quality and explain key implementation decisions briefly."
+
+policy:
+  allow_implicit_invocation: true

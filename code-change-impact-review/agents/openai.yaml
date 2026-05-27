@@ -1,0 +1,4 @@
+﻿interface:
+  display_name: "Code Change Impact Review"
+  short_description: "Require rationale and logic impact analysis for every code edit"
+  default_prompt: "Use this skill to enforce mandatory explanation of why each code change is made and how it impacts related logic, dependencies, and risks."

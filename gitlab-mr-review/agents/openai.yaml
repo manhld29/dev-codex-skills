@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitLab MR Review"
+  short_description: "Review GitLab MRs for code and security risks"
+  default_prompt: "Use $gitlab-mr-review to review GitLab MR <MR_ID>, and return convention/security findings in Vietnamese with exact file:line locations."
