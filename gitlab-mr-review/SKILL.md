@@ -1,11 +1,11 @@
 ---
 name: gitlab-mr-review
-description: Review GitLab merge requests by MR ID with a structured code-review workflow that checks coding convention, security risks, and behavioral regressions. Use when the user asks to review a GitLab MR, audit a merge request for vulnerabilities, or produce findings with exact file/line locations.
+description: Review GitLab merge requests by MR ID with senior-level rigor (15+ years mindset), including coding convention checks, security checks, regression risk analysis, and cross-logic impact analysis. Use when the user asks to review a GitLab MR and wants findings with exact file/line locations in structured tables, clickable code links, and reproducible impact scenarios.
 ---
 
 # GitLab MR Review
 
-Execute a consistent MR review from GitLab API data and report actionable findings.
+Review as a senior engineer with 15 years of experience: strict on correctness, practical on risk, and explicit on system-wide impact.
 
 ## Inputs
 
@@ -28,36 +28,62 @@ Execute a consistent MR review from GitLab API data and report actionable findin
    - Script auto-detects `project_id` from `git remote get-url origin`.
    - Script also auto-loads `~/.codex/.env` as fallback when `GITLAB_TOKEN` is not already in process env.
    - If auto-detection fails, provide `--project-id` (and `--gitlab-url` for self-hosted GitLab).
-   - If the script fails because a variable is missing, ask for the missing value and retry.
 2. Read review criteria:
    - Load `references/review-checklist.md`.
-3. Review only changed lines first, then nearby context as needed:
-   - Prioritize correctness regressions and security vulnerabilities.
-   - Flag convention issues only when they are concrete and actionable.
-4. Produce findings with exact locations:
-   - Always include `file` and `line` in `path:line` format.
-   - Include severity (`high`, `medium`, `low`) and category (`security`, `correctness`, `convention`, `test-gap`).
-   - Write the full review result in Vietnamese.
-5. Close with risk summary:
+3. Perform senior review:
+   - Review changed lines first, then surrounding code paths.
+   - Prioritize correctness, security, and behavioral regressions.
+   - Evaluate impact on related logic/modules, API contracts, side effects, and downstream flows.
+4. Report findings in Vietnamese with exact location:
+   - Always include `path:line`.
+   - Include severity (`high`, `medium`, `low`) and category (`security`, `correctness`, `convention`, `test-gap`, `impact`).
+   - Write Vietnamese with proper diacritics (tiếng Việt có dấu).
+5. For each impacted logic case:
+   - Provide a reproducible scenario with step-by-step test instructions.
+6. Close with risk summary:
    - Count findings by severity.
+   - List affected modules/flows.
    - List required follow-up tests.
 
 ## Output Format
 
-Return findings first in this shape:
+### 1) Bảng vấn đề chính (bắt buộc)
 
-- `[severity][category] path:line - short title`
-- `Impact:` one sentence.
-- `Evidence:` code-level observation from diff/context.
-- `Recommendation:` concrete change.
+| STT | Mức độ | Nhóm | Vị trí | Hàm/đoạn code liên quan | Vấn đề | Logic khác bị ảnh hưởng? | Ảnh hưởng như thế nào | Bằng chứng | Khuyến nghị |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
-Use Vietnamese labels in final response:
+Rules:
 
-- `Tác động:` for impact.
-- `Bằng chứng:` for evidence.
-- `Khuyến nghị:` for recommendation.
+- Viết toàn bộ nội dung bằng tiếng Việt có dấu.
+- `Vị trí` phải là `path:line` và ở dạng link có thể click.
+- Mọi file/hàm/đoạn code được nhắc đến đều phải có link click mở file.
+- Dùng format link: `[nhãn](/đường/dẫn/tuyệt/đối/tới/file.py:line)`.
+- `Logic khác bị ảnh hưởng?` chỉ nhận `Có` hoặc `Không`.
+- `Ảnh hưởng như thế nào` phải mô tả cụ thể module/flow nào bị tác động và cơ chế tác động.
+- `Bằng chứng` phải trỏ tới diff hoặc dòng code liên quan bằng link click.
 
-If no issues are found, explicitly state `Không có phát hiện cần hành động` and still include residual risks (for example, missing tests or unreviewed runtime paths).
+### 2) Bảng kịch bản tái hiện ảnh hưởng logic (bắt buộc khi có `Có`)
+
+| STT | Logic bị ảnh hưởng | Mục tiêu test | Tiền điều kiện | Các bước tái hiện | Kết quả kỳ vọng | Kết quả có thể gặp/rủi ro | Gợi ý tự động hóa test |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+
+Rules:
+
+- `Các bước tái hiện` phải là chuỗi bước rõ ràng (Bước 1, Bước 2, ...).
+- Nếu có thể, thêm lệnh test cụ thể (ví dụ `pytest`, `go test`, script nội bộ).
+- Mỗi logic bị ảnh hưởng trong bảng vấn đề phải có ít nhất một kịch bản tái hiện tương ứng.
+
+### 3) Tổng kết rủi ro
+
+- Tổng số lỗi theo mức độ (`high/medium/low`).
+- Luồng có rủi ro cao nhất.
+- Danh sách test bắt buộc chạy.
+- Dòng bắt buộc: `Đánh giá ảnh hưởng logic liên quan: Có/Không` và giải thích ngắn gọn.
+
+### 4) Trường hợp không có vấn đề
+
+- Ghi rõ: `Không có phát hiện cần hành động`.
+- Vẫn phải nêu rủi ro tồn dư và test cần chạy.
 
 ## Boundaries
 

@@ -1,0 +1,3 @@
+interface:
+  display_name: "GitLab Dual MR Impact & Security Review"
+  short_description: "Compare 2 GitLab MRs for logic and critical security risks"

@@ -25,6 +25,22 @@
 - Assert on visible UI text/state changes.
 - Avoid only asserting no exception.
 
+## CSV Tracking Contract
+
+1. Keep testcase CSV under `test_case/`.
+2. Keep CSV columns exactly:
+- `tc_id`
+- `title`
+- `precondition`
+- `steps`
+- `expected`
+- `result`
+- `actual`
+3. Map test method to testcase row by `tc_id` pattern in method name:
+- `test_tc01_*` -> `TC01`
+- `test_tc04_*` -> `TC04`
+4. Update CSV after each test method execution.
+
 ## Flakiness Control
 
 1. Replace fixed sleeps with waits when possible.

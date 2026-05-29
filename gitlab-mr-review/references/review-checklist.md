@@ -1,6 +1,8 @@
-﻿# Review Checklist
+# Review Checklist
 
 Use this checklist while reviewing a GitLab merge request.
+
+Review posture: act as a senior engineer with 15 years of practical delivery and incident-response experience.
 
 ## 1) Correctness and Regression
 
@@ -33,10 +35,37 @@ Use this checklist while reviewing a GitLab merge request.
 - Medium: clear bug or security weakness with realistic impact.
 - Low: maintainability issue, minor convention drift, weak test coverage.
 
-## 5) Finding Quality Gate
+## 5) Cross-Logic Impact Analysis
+
+- Identify upstream inputs that can alter behavior in the changed code paths.
+- Identify downstream consumers that depend on changed outputs, events, or side effects.
+- Check contract compatibility for function signatures, API payload keys, and return semantics.
+- Check lifecycle impacts: retries, rollback, state transitions, and cleanup behavior.
+- Check concurrent/runtime impacts: locks, races, shared state, and timeout cascades.
+- Explicitly map each finding to at least one impacted module/flow when applicable.
+
+## 6) Clickable Evidence Requirement
+
+- Every mentioned file must have a clickable link.
+- Every mentioned function or code block must include a clickable link to its nearest definition/use line.
+- Use format: `[label](/absolute/path/to/file.ext:line)`.
+- Do not report findings without at least one clickable evidence link.
+
+## 7) Reproduction Scenario Requirement
+
+For each finding where `Logic khác bị ảnh hưởng? = Có`:
+
+- Provide at least one step-by-step reproduction scenario.
+- Include preconditions, test steps, expected result, and likely actual/risk result.
+- Provide executable test command when possible (`pytest`, `go test`, local script, curl, etc.).
+
+## 8) Finding Quality Gate
 
 Before reporting a finding, ensure:
 
 - The finding points to a specific changed file and line.
 - The reasoning ties behavior to concrete risk.
+- The impact on related logic/flows is clearly explained.
+- State explicitly whether related project logic is impacted (`Có`/`Không`) and explain why.
 - The recommendation is minimal and implementable.
+- Use Vietnamese with proper diacritics in the final review output.
